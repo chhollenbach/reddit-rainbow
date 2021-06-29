@@ -14,7 +14,6 @@ def main():
     # create a stream of reddit comments
     subreddits = reddit.subreddit("all")
     for comment in subreddits.stream.comments():
-        print(count)
         process_comment(comment, color_list)
 
 
