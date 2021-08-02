@@ -18,6 +18,7 @@
   "homepage": "https://github.com/chhollenbach/reddit-rainbow#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "express-basic-auth": "^1.2.0"
+    "express-basic-auth": "^1.2.0",
+    "pg": "^8.7.1"
   }
 }
