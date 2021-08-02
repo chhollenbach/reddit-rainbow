@@ -27,7 +27,6 @@ def main():
                                      data = json_payload,
                                      headers = headers,
                                      auth = (config.username, config.password))
-            print(response.text)
 
 
 def process_comment(comment, colors):
