@@ -1,4 +1,7 @@
 import praw
+import requests
+import json
+import config
 
 
 def main():
@@ -11,12 +14,20 @@ def main():
     # create color list - to expand later
     color_list = ['red', 'yellow', 'blue', 'orange', 'green', 'violet', 'purple']
 
+    # set header for POST request
+    headers = {'content-type': 'application/json'}
+
     # create a stream of reddit comments
     subreddits = reddit.subreddit("all")
     for comment in subreddits.stream.comments():
         comment_color_info = process_comment(comment, color_list)
         for color_data in comment_color_info:
-            print(color_data)
+            json_payload = json.dumps(color_data)
+            response = requests.post('http://localhost:3000/pybot_data',
+                                     data = json_payload,
+                                     headers = headers,
+                                     auth = (config.username, config.password))
+            print(response.text)
 
 
 def process_comment(comment, colors):
@@ -28,9 +39,15 @@ def process_comment(comment, colors):
     for color in colors:
         if ' ' + color + ' ' in comment.body.lower():
             if color == 'purple':
-                color_info.append([comment.created_utc, 'violet', comment.subreddit.display_name])
+                color_info.append({'comment_id': comment.id,
+                                   'created_utc': comment.created_utc,
+                                   'color': 'violet',
+                                   'subreddit_display_name': comment.subreddit.display_name})
             else:
-                color_info.append([comment.id, comment.created_utc, color, comment.subreddit.display_name])
+                color_info.append({'comment_id': comment.id,
+                                   'created_utc': comment.created_utc,
+                                   'color': color,
+                                   'subreddit_display_name': comment.subreddit.display_name})
 
     return color_info
 
