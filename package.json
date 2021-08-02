@@ -1,0 +1,23 @@
+{
+  "name": "reddit-rainbow",
+  "version": "1.0.0",
+  "description": "Visualizing the rainbow of colors in Reddit comments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chhollenbach/reddit-rainbow.git"
+  },
+  "author": "Connor Hollenbach",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chhollenbach/reddit-rainbow/issues"
+  },
+  "homepage": "https://github.com/chhollenbach/reddit-rainbow#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0"
+  }
+}
