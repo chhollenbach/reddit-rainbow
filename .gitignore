@@ -1,1 +1,3 @@
 praw.ini
+node_modules/*
+config.py
