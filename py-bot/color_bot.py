@@ -2,9 +2,13 @@ import praw
 import requests
 import json
 import config
+import random
 
 
 def main():
+    # set random seed
+    random.seed(12368)
+
     # init bot
     reddit = praw.Reddit(
         "rainbow-bot",
@@ -22,11 +26,14 @@ def main():
     for comment in subreddits.stream.comments():
         comment_color_info = process_comment(comment, color_list)
         for color_data in comment_color_info:
-            json_payload = json.dumps(color_data)
-            response = requests.post('http://localhost:3000/pybot_data',
-                                     data = json_payload,
-                                     headers = headers,
-                                     auth = (config.username, config.password))
+            # limit comment data sent due to Heroku table limits
+            rand_int = random.randint(0,99)
+            if rand_int <= 1:
+                json_payload = json.dumps(color_data)
+                response = requests.post('https://reddit-rainbow.herokuapp.com/pybot_data',
+                                         data = json_payload,
+                                         headers = headers,
+                                         auth = (config.username, config.password))
 
 
 def process_comment(comment, colors):
