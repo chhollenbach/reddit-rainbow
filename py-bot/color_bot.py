@@ -1,7 +1,7 @@
 import praw
 import requests
 import json
-import config
+import os
 import random
 
 
@@ -11,9 +11,10 @@ def main():
 
     # init bot
     reddit = praw.Reddit(
-        "rainbow-bot",
-        user_agent='windows-python-script:reddit-rainbow-bot:v0.1 (by u/r-portfolio-Bot>)'
-    )
+            client_id=os.environ.get('cliend_id'),
+            client_secret=os.environ.get('client_secret'),
+            user_agent=os.environ.get('user_agent')
+            )
 
     # create color list - to expand later
     color_list = ['red', 'yellow', 'blue', 'orange', 'green', 'violet', 'purple']
@@ -33,7 +34,7 @@ def main():
                 response = requests.post('https://reddit-rainbow-web-api.herokuapp.com/pybot_data',
                                          data = json_payload,
                                          headers = headers,
-                                         auth = (config.username, config.password))
+                                         auth = (os.environ.get('username'), os.environ.get('password')))
 
 
 def process_comment(comment, colors):
