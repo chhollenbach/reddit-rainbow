@@ -43,15 +43,15 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res, next) => {res.send("Hello World!")})
+// app.get("/", (req, res, next) => {res.send("Hello World!")})
 
-app.get("/reset_table", (req, res, next) => {
-    client.query(dropTableQuery, function(err){
-        client.query(createTableQuery, function(err){
-          console.log('Table Reset');
-        })
-      });
-   });
+// app.get("/reset_table", (req, res, next) => {
+//     client.query(dropTableQuery, function(err){
+//         client.query(createTableQuery, function(err){
+//           console.log('Table Reset');
+//         })
+//       });
+//    });
 
 app.post("/pybot_data", basicAuth({
     users,
