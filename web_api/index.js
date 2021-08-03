@@ -63,6 +63,20 @@ app.post("/pybot_data", basicAuth({
                 return
             };
           })
-        res.send(req.body)
+        res.json(req.body)
         console.log(req.body)
    });
+
+
+// 404 and 500 routes
+app.use(function(req,res){
+  res.status(404);
+  res.render("404");
+});
+
+
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.status(500);
+  res.render("500");
+});

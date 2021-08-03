@@ -1,4 +1,4 @@
-praw.ini
-node_modules/*
-config.py
-*.env
+py-bot/praw.ini
+web_api/node_modules/*
+py-bot/config.py
+web_api/*.env
