@@ -30,7 +30,7 @@ def main():
             rand_int = random.randint(0,99)
             if rand_int <= 1:
                 json_payload = json.dumps(color_data)
-                response = requests.post('https://reddit-rainbow.herokuapp.com/pybot_data',
+                response = requests.post('https://reddit-rainbow-web-api.herokuapp.com/pybot_data',
                                          data = json_payload,
                                          headers = headers,
                                          auth = (config.username, config.password))

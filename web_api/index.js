@@ -29,8 +29,7 @@ const createTableQuery = 'CREATE TABLE reddit_rainbow_raw (' +
                 'created_utc             integer NOT NULL,' + 
                 'color                   VARCHAR(100) NOT NULL,' +
                 'subreddit_display_name  VARCHAR(100) NOT NULL' +
-                ');'
-const getFirstRowQuery = 'SELECT * FROM reddit_rainbow_raw LIMIT 1;';
+                ');';
 const insertRowQuery = 'INSERT INTO reddit_rainbow_raw (comment_id, created_utc, color, subreddit_display_name) VALUES ($1, $2 ,$3 ,$4);';
 
 
@@ -44,14 +43,15 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/", (req, res, next) => {res.send("Hello World!")})
 
-// app.get("/reset_table", (req, res, next) => {
-//     client.query(dropTableQuery, function(err){
-//         client.query(createTableQuery, function(err){
-//           console.log('Table Reset');
-//         })
-//       });
-//    });
+app.get("/reset_table", (req, res, next) => {
+    client.query(dropTableQuery, function(err){
+        client.query(createTableQuery, function(err){
+          console.log('Table Reset');
+        })
+      });
+   });
 
 app.post("/pybot_data", basicAuth({
     users,

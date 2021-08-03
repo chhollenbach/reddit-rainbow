@@ -1,5 +1,5 @@
 {
-  "name": "reddit-rainbow",
+  "name": "reddit-rainbow-web-api",
   "version": "1.0.0",
   "description": "Visualizing the rainbow of colors in Reddit comments",
   "main": "index.js",
