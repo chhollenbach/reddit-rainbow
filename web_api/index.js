@@ -43,7 +43,9 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// app.get("/", (req, res, next) => {res.send("Hello World!")})
+app.get("/", (req, res, next) => {
+  res.send("Hello World")
+ });
 
 // app.get("/reset_table", (req, res, next) => {
 //     client.query(dropTableQuery, function(err){
@@ -71,12 +73,12 @@ app.post("/pybot_data", basicAuth({
 // 404 and 500 routes
 app.use(function(req,res){
   res.status(404);
-  res.render("404");
+  res.send("404");
 });
 
 
 app.use(function(err, req, res, next){
   console.error(err.stack);
   res.status(500);
-  res.render("500");
+  res.send("500");
 });
