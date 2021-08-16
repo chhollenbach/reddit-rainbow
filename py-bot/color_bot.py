@@ -11,8 +11,8 @@ def main():
     random.seed(12368)
 
     # set window for batching requests
-    timeA = datetime.datetime.now().replace(hour=2, minute=0, second=0, microsecond=0).time()
-    timeB = datetime.datetime.now().replace(hour=3, minute=0, second=0, microsecond=0).time()
+    timeA = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).time()
+    timeB = datetime.datetime.now().replace(hour=0, minute=30, second=0, microsecond=0).time()
 
     # set up queue to store comments in for batching later
     color_data_queue = []
@@ -39,7 +39,8 @@ def main():
         if rand_int <= 1:
             for color_data in comment_color_info:
                 color_data_queue.append(color_data)
-        if datetime.datetime.now().time() >= timeA and datetime.datetime.now().time() < timeB:
+        # limit batching to three times a day to conserver dyno hours in Heroku
+        if (timeA <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB) or (timeA.replace(hour=8) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=8)) or (timeA.replace(hour=16) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=16)):
             while color_data_queue:
                 queue_front = color_data_queue.pop(0)
                 json_payload = json.dumps(queue_front)
