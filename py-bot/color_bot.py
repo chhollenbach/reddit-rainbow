@@ -3,11 +3,19 @@ import requests
 import json
 import os
 import random
+import datetime
 
 
 def main():
     # set random seed
     random.seed(12368)
+
+    # set window for batching requests
+    timeA = datetime.datetime.now().replace(hour=2, minute=0, second=0, microsecond=0).time()
+    timeB = datetime.datetime.now().replace(hour=3, minute=0, second=0, microsecond=0).time()
+
+    # set up queue to store comments in for batching later
+    color_data_queue = []
 
     # init bot
     reddit = praw.Reddit(
@@ -26,15 +34,19 @@ def main():
     subreddits = reddit.subreddit("all")
     for comment in subreddits.stream.comments():
         comment_color_info = process_comment(comment, color_list)
-        for color_data in comment_color_info:
-            # limit comment data sent due to Heroku table limits
-            rand_int = random.randint(0,99)
-            if rand_int <= 1:
-                json_payload = json.dumps(color_data)
+        rand_int = random.randint(0,99)
+        # limit comment data sent due to Heroku table limits
+        if rand_int <= 1:
+            for color_data in comment_color_info:
+                color_data_queue.append(color_data)
+        if datetime.datetime.now().time() >= timeA and datetime.datetime.now().time() < timeB:
+            while color_data_queue:
+                queue_front = color_data_queue.pop(0)
+                json_payload = json.dumps(queue_front)
                 response = requests.post('https://reddit-rainbow-web-api.herokuapp.com/pybot_data',
-                                         data = json_payload,
-                                         headers = headers,
-                                         auth = (os.environ.get('username'), os.environ.get('password')))
+                                        data = json_payload,
+                                        headers = headers,
+                                        auth = (os.environ.get('username'), os.environ.get('password')))
 
 
 def process_comment(comment, colors):
