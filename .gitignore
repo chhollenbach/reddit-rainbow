@@ -1,5 +1,6 @@
 py-bot/praw.ini
-web_api/node_modules/*
+web_api/node_modules/
 py-bot/config.py
 web_api/*.env
 .env
+/node_modules/*

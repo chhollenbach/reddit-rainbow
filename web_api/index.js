@@ -1,5 +1,6 @@
 const express = require("express");
 var app = express();
+var cors = require('cors');
 const basicAuth = require('express-basic-auth')
 const dotenv = require('dotenv').config();
 
@@ -58,7 +59,7 @@ app.use(express.urlencoded({ extended: false }));
 //       });
 //    });
 
-app.get('/color/:specific_color', (req, res, next) => {
+app.get('/color/:specific_color', cors(), (req, res, next) => {
   client.query(getAllColorRows, [req.params.specific_color], (err, result) => {
     if (err) {
       return next(err)
@@ -67,7 +68,7 @@ app.get('/color/:specific_color', (req, res, next) => {
   })
 });
 
-app.get('/color/subreddit_group/:specific_color', (req, res, next) => {
+app.get('/color/subreddit_group/:specific_color', cors(), (req, res, next) => {
   client.query(getColorCountBySubreddit, [req.params.specific_color], (err, result) => {
     if (err) {
       return next(err)
@@ -76,7 +77,7 @@ app.get('/color/subreddit_group/:specific_color', (req, res, next) => {
   })
 });
 
-app.get('/color_counts', (req, res, next) => {
+app.get('/color_counts', cors(), (req, res, next) => {
   client.query(getColorCounts, (err, result) => {
     if (err) {
       return next(err)
