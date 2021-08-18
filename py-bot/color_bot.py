@@ -25,7 +25,7 @@ def main():
             )
 
     # create color list - to expand later
-    color_list = ['red', 'yellow', 'blue', 'orange', 'green', 'violet', 'purple']
+    color_list = ['red', 'yellow', 'blue', 'orange', 'green', 'violet', 'purple', 'indigo']
 
     # set header for POST request
     headers = {'content-type': 'application/json'}

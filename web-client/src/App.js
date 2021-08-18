@@ -1,27 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-import TestConnection from './components/Test'
+import React, {useState} from 'react';
+import RainbowColorBox from './components/RainbowColorBox'
+import 'bulma/css/bulma.min.css'
+import About from './components/About'
+import InfoPanel from './components/InfoPanel'
 
 function App() {
+  const [infoVisible, setVisibility] = useState(false);
+  const [selectedColor, setColor] = useState('');
+
+  function toggleInfoPanel(col) {
+    setVisibility(true)
+    setColor(col)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <TestConnection/>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">The Rainbow in Reddit</header>
+        <div className="columns">
+          <RainbowColorBox onClick={toggleInfoPanel} color="Red"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Orange"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Yellow"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Green"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Blue"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Indigo"/>
+          <RainbowColorBox onClick={toggleInfoPanel} color="Violet"/>
+        </div>
+        <InfoPanel visible={infoVisible} color={selectedColor}/>
+        <About/>
+      </div>
+
   );
 }
 
