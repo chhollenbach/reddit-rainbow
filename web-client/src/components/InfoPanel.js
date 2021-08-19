@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 function InfoPanel(props){
     // essentially a wrapper component for SelectedPanel component below
     return (
-        <div>
+        <div className="Unselected-color">
             {props.visible ? <SelectedPanel color={props.color}/> : "Click a color to explore the data"}
         </div>
     )
@@ -18,7 +18,7 @@ function SelectedPanel(props){
     // this useEffect will run once
     // similar to componentDidMount()
     useEffect(() => {
-      let fetchURL = "https://reddit-rainbow-web-api.herokuapp.com/color/" + props.color.toLowerCase()
+      let fetchURL = "https://reddit-rainbow-web-api.herokuapp.com/1/" + props.color.toLowerCase() + "/recent"
       fetch(fetchURL)
         .then(res => res.json())
         .then(
@@ -40,16 +40,29 @@ function SelectedPanel(props){
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
+    } else if (items[0] === undefined) {
+      return <div>No Results</div>
     } else {
       return (
         <div className="Info-panel">
             <p>Selected color is {props.color}. Here's some info about the most recent time that color was mentioned:</p>
             <ul>
-            {items.map((item) => (
+              <li>
+                  UTC: {items[0].created_utc}
+              </li>
+              <li>
+                  Subreddit: {items[0].subreddit_display_name}
+              </li>
+              <li>
+                  Comment: {items[0].body}
+              </li>
+            {/* {items.map((item) => (
                 <li key={item.id}>
-                UTC: {item.created_utc} --- Subreddit: {item.subreddit_display_name}
+                  UTC: {item.created_utc}
+                  Subreddit: {item.subreddit_display_name}
+                  Comment: {item.body}
                 </li>
-            ))}
+            ))} */}
             </ul>
         </div>
       );

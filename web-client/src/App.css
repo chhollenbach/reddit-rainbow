@@ -35,3 +35,9 @@
 .columns {
   margin-bottom: 0 !important
 }
+
+.Unselected-color {
+  background-color: #282c34;
+  color: white;
+  min-height: 100vh;
+}
