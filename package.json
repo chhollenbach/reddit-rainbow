@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd web-client/ && npm start",
-    "build": "cd web-client/ && npm build"
+    "start": "cd web-client/ && npm run start",
+    "build": "cd web-client/ && npm run build"
   },
   "repository": {
     "type": "git",
