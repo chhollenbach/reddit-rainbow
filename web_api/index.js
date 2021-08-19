@@ -63,12 +63,12 @@ app.use(express.urlencoded({ extended: false }));
 //       });
 //    });
 
-app.get("/create_reddit_raw", (req, res, next) => {
-    client.query(createRedditRaw, function(err){
-          console.log('reddit_rainbow_raw created')
-          res.send('reddit_rainbow_raw created')
-        });
-    });
+// app.get("/create_reddit_raw", (req, res, next) => {
+//     client.query(createRedditRaw, function(err){
+//           console.log('reddit_rainbow_raw created')
+//           res.send('reddit_rainbow_raw created')
+//         });
+//     });
 
 
 // GET ROUTES
