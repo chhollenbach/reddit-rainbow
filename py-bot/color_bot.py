@@ -36,8 +36,7 @@ def main():
         comment_color_info = process_comment(comment, color_list)
         rand_int = random.randint(0,99)
         # limit comment data sent due to Heroku table limits
-        storage_perc = int(os.environ.get('storage_percent')) - 1
-        if rand_int <= storage_perc:
+        if rand_int <= 99:
             for color_data in comment_color_info:
                 color_data_queue.append(color_data)
         # limit batching to three times a day to conserver dyno hours in Heroku
