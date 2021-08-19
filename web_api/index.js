@@ -114,7 +114,7 @@ app.post("/pybot_data", basicAuth({
     users,
     unauthorizedResponse: '401 Invalid credentials'}), 
     (req, res, next) => {
-        var {comment_id, created_utc, color, subreddit_display_name} = req.body;
+        var {comment_id, created_utc, color, subreddit_display_name, body, score} = req.body;
         client.query(insertRowQuery, [comment_id, created_utc, color, subreddit_display_name, body, score], (err, result) => {
             if(err){
                 return next(err)
