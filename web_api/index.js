@@ -27,15 +27,17 @@ const dropTableQuery = 'DROP TABLE IF EXISTS reddit_rainbow_raw';
 const createTableQuery = 'CREATE TABLE reddit_rainbow_raw (' + 
                 'id                      SERIAL PRIMARY KEY,' +
                 'comment_id              VARCHAR(100) NOT NULL,' +
-                'created_utc             integer NOT NULL,' + 
+                'created_utc             INTEGER NOT NULL,' + 
                 'color                   VARCHAR(100) NOT NULL,' +
-                'subreddit_display_name  VARCHAR(100) NOT NULL' +
+                'subreddit_display_name  VARCHAR(255) NOT NULL' +
+                'body                    TEXT' +
+                'score                   INTEGER'                  
                 ');';
 const insertRowQuery = 'INSERT INTO reddit_rainbow_raw (comment_id, created_utc, color, subreddit_display_name) VALUES ($1, $2 ,$3 ,$4);';
-const getAllColorRows = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY created_utc DESC'
-const getColorCountBySubreddit = 'SELECT subreddit_display_name, COUNT(*) AS subreddit_count FROM reddit_rainbow_raw WHERE color = $1 GROUP BY subreddit_display_name ORDER BY 2 DESC'
-const getColorCounts = 'SELECT color, COUNT(*) as color_count FROM reddit_rainbow_raw GROUP BY color ORDER BY 2 DESC'
-
+const getNColorCountBySubreddit = 'SELECT subreddit_display_name, COUNT(*) AS subreddit_count FROM reddit_rainbow_raw WHERE color = $1 GROUP BY subreddit_display_name ORDER BY 2 DESC LIMIT $2'
+const getNMostRecentColorRows = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY created_utc DESC LIMIT $2'
+const getNTopColorScores = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY score DESC LIMIT $2'
+const getTotalColorCounts = 'SELECT color, COUNT(id) FROM reddit_rainbow_raw GROUP BY 1 ORDER BY 2 DESC'
 
 // Heroku Port or Local port
 const PORT = process.env.PORT || 3000;
@@ -47,6 +49,8 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+// TESTING ROUTES
 // app.get("/", (req, res, next) => {
 //   res.send("Hello World")
 //  });
@@ -59,8 +63,9 @@ app.use(express.urlencoded({ extended: false }));
 //       });
 //    });
 
-app.get('/color/:specific_color', cors(), (req, res, next) => {
-  client.query(getAllColorRows, [req.params.specific_color], (err, result) => {
+// GET ROUTES
+app.get('/:limit/:specific_color/scores', cors(), (req, res, next) => {
+  client.query(getNTopColorScores, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -68,8 +73,8 @@ app.get('/color/:specific_color', cors(), (req, res, next) => {
   })
 });
 
-app.get('/color/subreddit_group/:specific_color', cors(), (req, res, next) => {
-  client.query(getColorCountBySubreddit, [req.params.specific_color], (err, result) => {
+app.get('/:limit/:specific_color/recent', cors(), (req, res, next) => {
+  client.query(getNMostRecentColorRows, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -77,8 +82,8 @@ app.get('/color/subreddit_group/:specific_color', cors(), (req, res, next) => {
   })
 });
 
-app.get('/color_counts', cors(), (req, res, next) => {
-  client.query(getColorCounts, (err, result) => {
+app.get('/:limit/:specific_color/subreddit_groupings/', cors(), (req, res, next) => {
+  client.query(getNColorCountBySubreddit, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -86,6 +91,17 @@ app.get('/color_counts', cors(), (req, res, next) => {
   })
 });
 
+app.get('/color_counts/', cors(), (req, res, next) => {
+  client.query(getTotalColorCounts, (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(result.rows)
+  })
+});
+
+
+// POST ROUTES
 app.post("/pybot_data", basicAuth({
     users,
     unauthorizedResponse: '401 Invalid credentials'}), 
