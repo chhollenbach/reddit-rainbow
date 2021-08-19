@@ -40,6 +40,9 @@ def main():
         if rand_int <= storage_percent:
             for color_data in comment_color_info:
                 color_data_queue.append(color_data)
+        print(color_data_queue)
+        print(rand_int <= storage_percent)
+        print(not (1 == int(os.environ.get('enforced_downtime'))))
         # limit batching to three times a day to conserve dyno hours in Heroku
         if (timeA <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB) or (timeA.replace(hour=8) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=8)) or (timeA.replace(hour=16) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=16)) or not (1 == int(os.environ.get('enforced_downtime'))):
             while color_data_queue:
