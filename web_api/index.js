@@ -23,17 +23,18 @@ const client = new Client({
 client.connect();
 
 // query objects
-const dropTableQuery = 'DROP TABLE IF EXISTS reddit_rainbow_raw';
-const createTableQuery = 'CREATE TABLE reddit_rainbow_raw (' + 
+const dropRedditRaw = 'DROP TABLE IF EXISTS reddit_rainbow_raw';
+const createRedditRaw = 'CREATE TABLE reddit_rainbow_raw (' + 
                 'id                      SERIAL PRIMARY KEY,' +
                 'comment_id              VARCHAR(100) NOT NULL,' +
                 'created_utc             INTEGER NOT NULL,' + 
                 'color                   VARCHAR(100) NOT NULL,' +
-                'subreddit_display_name  VARCHAR(255) NOT NULL' +
-                'body                    TEXT' +
-                'score                   INTEGER'                  
+                'subreddit_display_name  VARCHAR(255) NOT NULL,' +
+                'body                    VARCHAR NOT NULL,' +
+                'score                   INTEGER NOT NULL'   +  
                 ');';
-const insertRowQuery = 'INSERT INTO reddit_rainbow_raw (comment_id, created_utc, color, subreddit_display_name) VALUES ($1, $2 ,$3 ,$4);';
+
+const insertRowQuery = 'INSERT INTO reddit_rainbow_raw (comment_id, created_utc, color, subreddit_display_name, body, score) VALUES ($1, $2 ,$3 ,$4, $5, $6);';
 const getNColorCountBySubreddit = 'SELECT subreddit_display_name, COUNT(*) AS subreddit_count FROM reddit_rainbow_raw WHERE color = $1 GROUP BY subreddit_display_name ORDER BY 2 DESC LIMIT $2'
 const getNMostRecentColorRows = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY created_utc DESC LIMIT $2'
 const getNTopColorScores = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY score DESC LIMIT $2'
@@ -55,13 +56,20 @@ app.use(express.urlencoded({ extended: false }));
 //   res.send("Hello World")
 //  });
 
-// app.get("/reset_table", (req, res, next) => {
-//     client.query(dropTableQuery, function(err){
-//         client.query(createTableQuery, function(err){
-//           console.log('Table Reset');
-//         })
+// app.get("/drop_reddit_raw", (req, res, next) => {
+//    client.query(dropRedditRaw, function(err){
+//         console.log('reddit_rainbow_raw dropped')
+//         res.send('reddit_rainbow_raw dropped')
 //       });
 //    });
+
+app.get("/create_reddit_raw", (req, res, next) => {
+    client.query(createRedditRaw, function(err){
+          console.log('reddit_rainbow_raw created')
+          res.send('reddit_rainbow_raw created')
+        });
+    });
+
 
 // GET ROUTES
 app.get('/:limit/:specific_color/scores', cors(), (req, res, next) => {
@@ -107,7 +115,7 @@ app.post("/pybot_data", basicAuth({
     unauthorizedResponse: '401 Invalid credentials'}), 
     (req, res, next) => {
         var {comment_id, created_utc, color, subreddit_display_name} = req.body;
-        client.query(insertRowQuery, [comment_id, created_utc, color, subreddit_display_name], (err, result) => {
+        client.query(insertRowQuery, [comment_id, created_utc, color, subreddit_display_name, body, score], (err, result) => {
             if(err){
                 return next(err)
             };
