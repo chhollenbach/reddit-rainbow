@@ -36,11 +36,12 @@ def main():
         comment_color_info = process_comment(comment, color_list)
         rand_int = random.randint(0,99)
         # limit comment data sent due to Heroku table limits
-        if rand_int <= 99:
+        storage_percent = int(os.environ.get('storage_percent')) - 1
+        if rand_int <= storage_percent:
             for color_data in comment_color_info:
                 color_data_queue.append(color_data)
-        # limit batching to three times a day to conserver dyno hours in Heroku
-        if (timeA <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB) or (timeA.replace(hour=8) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=8)) or (timeA.replace(hour=16) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=16)):
+        # limit batching to three times a day to conserve dyno hours in Heroku
+        if (timeA <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB) or (timeA.replace(hour=8) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=8)) or (timeA.replace(hour=16) <= datetime.datetime.now().time() and datetime.datetime.now().time() < timeB.replace(hour=16)) or (not 1 == int(os.environ.get('enforced_downtime'))):
             while color_data_queue:
                 queue_front = color_data_queue.pop(0)
                 json_payload = json.dumps(queue_front)
