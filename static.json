@@ -1,0 +1,6 @@
+{
+    "root": "web-client/build/",
+    "routes": {
+      "/**": "index.html"
+    }
+  }

@@ -1,1 +1,1 @@
-web: cd web-client/ && npm run build
+web: bin/boot
