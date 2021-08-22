@@ -33,12 +33,16 @@ const createRedditRaw = 'CREATE TABLE reddit_rainbow_raw (' +
                 'body                    VARCHAR NOT NULL,' +
                 'score                   INTEGER NOT NULL'   +  
                 ');';
-
 const insertRowQuery = 'INSERT INTO reddit_rainbow_raw (comment_id, created_utc, color, subreddit_display_name, body, score) VALUES ($1, $2 ,$3 ,$4, $5, $6);';
 const getNColorCountBySubreddit = 'SELECT subreddit_display_name, COUNT(*) AS subreddit_count FROM reddit_rainbow_raw WHERE color = $1 GROUP BY subreddit_display_name ORDER BY 2 DESC LIMIT $2'
 const getNMostRecentColorRows = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY created_utc DESC LIMIT $2'
 const getNTopColorScores = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY score DESC LIMIT $2'
 const getTotalColorCounts = 'SELECT color, COUNT(id) FROM reddit_rainbow_raw GROUP BY 1 ORDER BY 2 DESC'
+const getAllRows = 'SELECT * from reddit_rainbow_raw ORDER BY created_utc DESC'
+const getSpecificComment = 'SELECT * from reddit_rainbow_raw WHERE comment_id = $1 and id = $2'
+const updateScore = 'UPDATE reddit_rainbow_raw SET score = $1 WHERE comment_id = $2 and id = $3'
+const deleteCommentData = 'DELETE from reddit_rainbow_raw WHERE comment_id = $1 and id = $2'
+
 
 // Heroku Port or Local port
 const PORT = process.env.PORT || 3000;
@@ -72,6 +76,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 // GET ROUTES
+// N comments of specified color sorted by score descending
 app.get('/:limit/:specific_color/scores', cors(), (req, res, next) => {
   client.query(getNTopColorScores, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
@@ -81,6 +86,7 @@ app.get('/:limit/:specific_color/scores', cors(), (req, res, next) => {
   })
 });
 
+// N comments of specified color sorted by recency descending
 app.get('/:limit/:specific_color/recent', cors(), (req, res, next) => {
   client.query(getNMostRecentColorRows, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
@@ -90,6 +96,7 @@ app.get('/:limit/:specific_color/recent', cors(), (req, res, next) => {
   })
 });
 
+// Grouping by subreddit, N counts of specific color, sorted by count descending
 app.get('/:limit/:specific_color/subreddit_groupings/', cors(), (req, res, next) => {
   client.query(getNColorCountBySubreddit, [req.params.specific_color, req.params.limit], (err, result) => {
     if (err) {
@@ -99,6 +106,7 @@ app.get('/:limit/:specific_color/subreddit_groupings/', cors(), (req, res, next)
   })
 });
 
+// Total color counts for all colors
 app.get('/color_counts/', cors(), (req, res, next) => {
   client.query(getTotalColorCounts, (err, result) => {
     if (err) {
@@ -107,6 +115,55 @@ app.get('/color_counts/', cors(), (req, res, next) => {
     res.send(result.rows)
   })
 });
+
+// returns all rows, used by python script to update score/delete comments
+app.get('/all_rows/', cors(), (req, res, next) => {
+  client.query(getAllRows, (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(result.rows)
+  })
+});
+
+// returns specific comment by comment id and row id
+app.get('/comment_by_id/:comment_id/:id', cors(), (req, res, next) => {
+  client.query(getSpecificComment, [req.params.comment_id, req.params.id], (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(result.rows)
+  })
+});
+
+
+// PUT ROUTES
+// Update score for given comment id and row id
+app.put("/new_score/:score/at/:comment_id/:id", basicAuth({
+  users,
+  unauthorizedResponse: '401 Invalid credentials'}), 
+  (req, res, next) => {
+      client.query(updateScore, [req.params.score, req.params.comment_id, req.params.id], (err, result) => {
+          if(err){
+              return next(err)
+          };
+        })
+      res.json(req.params)
+ });
+
+// DELETE ROUTES
+// delete comment data at given comment/row id 
+app.delete("/comment_by_id/:comment_id/:id", basicAuth({
+  users,
+  unauthorizedResponse: '401 Invalid credentials'}), 
+  (req, res, next) => {
+      client.query(deleteCommentData, [req.params.comment_id, req.params.id], (err, result) => {
+          if(err){
+              return next(err)
+          };
+        })
+      res.json(req.params)
+ });
 
 
 // POST ROUTES
@@ -121,7 +178,6 @@ app.post("/pybot_data", basicAuth({
             };
           })
         res.json(req.body)
-        console.log(req.body)
    });
 
 
