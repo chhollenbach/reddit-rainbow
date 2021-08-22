@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function InfoPanel(props){
-    // essentially a wrapper component for SelectedPanel component below
-    return (
-        <div className="Unselected-color">
-            {props.visible ? <SelectedPanel color={props.color}/> : "Click a color to explore the data"}
-        </div>
-    )
-}
-
-function SelectedPanel(props){
+function MostRecentCommentPanel(props){
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
@@ -43,12 +34,16 @@ function SelectedPanel(props){
     } else if (items[0] === undefined) {
       return <div>No Results</div>
     } else {
+      let date = new Date(0)
+      date.setUTCSeconds(items[0].created_utc)
+      let dateString = date.toString()
+
       return (
         <div className="Info-panel">
-            <p>Selected color is {props.color}. Here's some info about the most recent time that color was mentioned:</p>
+            <p>Here's some info about the most recent time that {props.color} was mentioned:</p>
             <ul>
               <li>
-                  UTC: {items[0].created_utc}
+                  Date: {dateString}
               </li>
               <li>
                   Subreddit: {items[0].subreddit_display_name}
@@ -70,4 +65,4 @@ function SelectedPanel(props){
   }
 
 
-export default InfoPanel
+export default MostRecentCommentPanel

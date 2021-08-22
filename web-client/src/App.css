@@ -21,23 +21,39 @@
   padding-top: 1vh !important;
 }
 
-.column:hover {
+.Color-column:hover {
     flex-grow: 2;
     filter: brightness(1);
 }
 
-.Info-panel {
+.Info-panels-left {
   background-color: #282c34;
   color: white;
   min-height: 100vh;
+  max-width: 50vw;
+}
+
+.Info-panels-right {
+  background-color: #282c34;
+  color: white;
+  min-height: 100vh;
+  max-width: 50vw;
 }
 
 .columns {
   margin-bottom: 0 !important
 }
 
-.Unselected-color {
+.Select-color-instructions {
   background-color: #282c34;
   color: white;
   min-height: 100vh;
+}
+
+.Dash-panels {
+  background-color: #282c34;
+}
+
+.Dashboard {
+  padding: 0px !important;
 }

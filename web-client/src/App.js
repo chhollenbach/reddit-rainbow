@@ -1,9 +1,9 @@
 import './App.css';
+import 'bulma/css/bulma.min.css'
 import React, {useState} from 'react';
 import RainbowColorBox from './components/RainbowColorBox'
-import 'bulma/css/bulma.min.css'
 import About from './components/About'
-import InfoPanel from './components/InfoPanel'
+import InfoDash from './components/InfoDash'
 
 function App() {
   const [infoVisible, setVisibility] = useState(false);
@@ -26,7 +26,7 @@ function App() {
           <RainbowColorBox onClick={toggleInfoPanel} color="Indigo"/>
           <RainbowColorBox onClick={toggleInfoPanel} color="Violet"/>
         </div>
-        <InfoPanel visible={infoVisible} color={selectedColor}/>
+        <InfoDash visible={infoVisible} color={selectedColor}/>
         <About/>
       </div>
 
