@@ -38,7 +38,7 @@ const getNColorCountBySubreddit = 'SELECT subreddit_display_name, COUNT(*) AS su
 const getNMostRecentColorRows = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY created_utc DESC LIMIT $2'
 const getNTopColorScores = 'SELECT * FROM reddit_rainbow_raw WHERE color = $1 ORDER BY score DESC LIMIT $2'
 const getTotalColorCounts = 'SELECT color, COUNT(id) FROM reddit_rainbow_raw GROUP BY 1 ORDER BY 2 DESC'
-const getAllRows = 'SELECT * from reddit_rainbow_raw ORDER BY created_utc DESC'
+const getAllRows = 'SELECT * from reddit_rainbow_raw ORDER BY created_utc ASC'
 const getSpecificComment = 'SELECT * from reddit_rainbow_raw WHERE comment_id = $1 and id = $2'
 const updateScore = 'UPDATE reddit_rainbow_raw SET score = $1 WHERE comment_id = $2 and id = $3'
 const deleteCommentData = 'DELETE from reddit_rainbow_raw WHERE comment_id = $1 and id = $2'
@@ -116,7 +116,7 @@ app.get('/color_counts/', cors(), (req, res, next) => {
   })
 });
 
-// returns all rows, used by python script to update score/delete comments
+// returns all rows, oldest first, used by python script to update score/delete comments
 app.get('/all_rows/', cors(), (req, res, next) => {
   client.query(getAllRows, (err, result) => {
     if (err) {

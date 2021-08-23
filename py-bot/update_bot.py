@@ -23,12 +23,12 @@ async def main():
     async with aiohttp.ClientSession(auth=aiohttp.BasicAuth(os.environ.get('username'), os.environ.get('password'))) as session:
         comment_queue = await get_all_comments()
         tasks = []
-        n = 0
+        n = len(comment_queue)
         for comment_object in comment_queue:
-            n += 1
+            n -= 1
             tasks.append(asyncio.create_task(update_db(session, comment_object,reddit_instance, n)))
-        # iterate through comments while total < threshold. Update scores, delete comments if they are deleted
-        # also deletes oldest rows rows beyond purge percentage
+        # iterate through comments, any comments beyond purge threshold are removed. Beyond that, scores are updated,
+        # and if the comment was deleted or removed on redidt, it is removed from the DB to maintain privacy
         await asyncio.gather(*tasks)
         await session.close()
         print("DB Update Complete")
