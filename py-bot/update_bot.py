@@ -3,7 +3,6 @@ import os
 import aiohttp
 import asyncio
 import asyncpraw
-import praw
 import asyncprawcore
 
 
@@ -58,6 +57,7 @@ async def update_db(session, comment_object, reddit_instance, n):
     if n >= purge_threshold:
             delete_url = 'https://reddit-rainbow-web-api.herokuapp.com/comment_by_id/' + comment_id + "/" + str(id)
             async with session.delete(delete_url) as response:
+                print(response.status)
                 return
     else:
         try:
@@ -67,11 +67,13 @@ async def update_db(session, comment_object, reddit_instance, n):
         if current_comment.body == "[deleted]" or current_comment.body == "[removed]":
             delete_url = 'https://reddit-rainbow-web-api.herokuapp.com/comment_by_id/' + comment_id + "/" + str(id)
             async with session.delete(delete_url) as response:
+                print(response.status)
                 return
         elif current_comment.score != comment_object["score"]:
             new_score = current_comment.score
             put_url = 'https://reddit-rainbow-web-api.herokuapp.com/new_score/' + str(new_score) + '/at/' + comment_id + "/" + str(id)
             async with session.put(put_url) as response:
+                print(response.status)
                 return
 
 
