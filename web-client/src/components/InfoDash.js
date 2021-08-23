@@ -28,7 +28,7 @@ function ColorDash(props){
             <TopScorePanel color={props.color}/>
             <TopSubredditsPanel color={props.color} count={5}/>
           </div>
-          <div className = "column Info-panels-right">
+          <div className="column Info-panels-right">
             <CommentFeed color={props.color} count={10}/>
           </div>
         </div>

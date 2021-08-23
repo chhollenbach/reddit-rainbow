@@ -39,7 +39,7 @@ function MostRecentCommentPanel(props){
       let dateString = date.toString()
 
       return (
-        <div className="Info-panel">
+        <div className="Info-panel box">
             <p>Here's some info about the most recent time that {props.color} was mentioned:</p>
             <ul>
               <li>

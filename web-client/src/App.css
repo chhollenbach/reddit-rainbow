@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #fafafa !important;
 }
 
 .footer {
@@ -19,6 +19,8 @@
   bottom: 0;
   padding-bottom: 1vh !important;
   padding-top: 1vh !important;
+  margin-top: 1vh !important;
+  font-size: .75em !important;
 }
 
 .Color-column:hover {
@@ -28,16 +30,22 @@
 
 .Info-panels-left {
   background-color: #282c34;
-  color: white;
-  min-height: 100vh;
+  max-height: 90vh;
   max-width: 50vw;
 }
 
 .Info-panels-right {
   background-color: #282c34;
-  color: white;
-  min-height: 100vh;
+  max-height: 90vh;
   max-width: 50vw;
+}
+
+.Comment-scroll-box {
+  overflow: auto
+}
+
+.Info-panel {
+  max-height: 90vh;
 }
 
 .columns {
@@ -46,7 +54,7 @@
 
 .Select-color-instructions {
   background-color: #282c34;
-  color: white;
+  color: #fafafa !important;
   min-height: 100vh;
 }
 
@@ -56,4 +64,45 @@
 
 .Dashboard {
   padding: 0px !important;
+}
+
+.Color-column {
+  min-height: 20vh;
+  max-height: 50vh;
+}
+
+.box {
+  background-color: #42454A !important;
+  color: #fafafa !important;
+}
+
+.top-score-box{
+  max-height: 39.3vh !important;
+  min-height: 10vh !important;
+  overflow: auto
+}
+
+.count-box {
+  max-height: 20vh !important;
+  min-height: 10vh !important;
+  overflow: auto
+}
+
+.subreddit-box {
+  max-height: 35vh !important;
+  min-height: 15vh !important;
+  overflow: auto
+}
+
+.comment-feed-line {
+  background-color: #282c34 !important;
+}
+
+.comment-box {
+  overflow: auto;
+  background-color: #686A6E !important;
+}
+
+.datapoint {
+  color: #E9E9E9 !important;
 }

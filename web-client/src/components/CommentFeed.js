@@ -35,17 +35,14 @@ function CommentFeed(props){
     return <div>No Results</div>
   } else {
     return (
-      <div className="Info-panel">
-          <h2>Comment Feed for {props.color}</h2>
-          <hr></hr>
-          <ul>
+      <div className="Info-panel box Comment-scroll-box">
+          <h2 className="block is-size-4">Here's the latest chatter about {props.color} on reddit</h2>
           {items.map((item) => (
-              <li key={item.id}>
+              <div className="box comment-box" key={item.id}>
                 {item.body}
-                <hr></hr>
-              </li>
+              </div>
           ))}
-          </ul>
+
       </div>
     );
   }

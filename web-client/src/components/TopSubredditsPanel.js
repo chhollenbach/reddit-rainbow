@@ -37,8 +37,8 @@ function TopSubredditsPanel(props){
       return <div>No Results</div>
     } else {
       return (
-        <div className="Info-panel">
-            <h2>Top Subreddits</h2>
+        <div className="Info-panel box subreddit-box">
+            <h2 className="block is-size-4">{props.color} has been mentioned the most in these subreddits:</h2>
             <ul>
             {items.map((item) => (
                 <li key={item.id}>

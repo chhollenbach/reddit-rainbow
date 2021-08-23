@@ -67,19 +67,19 @@ function RainbowColorBox(props) {
 
     return(
             <div className="column Color-column" style={divStyle} onClick={() => toggleInfoPanel(props.color)}>
-                <div className="column">
+                <div className="column color-text-div">
                     {colorWords.english}
                 </div>
-                <div className="column">
+                <div className="column color-text-div">
                     {colorWords.spanish}
                 </div>
-                <div className="column">
+                <div className="column color-text-div">
                     {colorWords.mandarin}
                 </div>
-                <div className="column">
+                <div className="column color-text-div">
                     {colorWords.hindi}
                 </div>
-                <div className="column">
+                <div className="column color-text-div">
                     {colorWords.russian}
                 </div>
             </div>

@@ -36,16 +36,11 @@ function TopScorePanel(props){
     } else {
 
     return (
-        <div className="Info-panel">
-        <h2>Highest Scoring Comment</h2>
-        <ul>
-          <li>
-              Score: {items[0].score}
-          </li>
-          <li>
-              {items[0].body}
-          </li>
-        </ul>
+        <div className="Info-panel box top-score-box">
+        <p className="block is-size-5">The highest scoring comment had a score of <strong className="datapoint">{items[0].score}</strong>:</p>
+        <p className="is-size-6">
+            {items[0].body}
+        </p>
     </div>
     );
     }

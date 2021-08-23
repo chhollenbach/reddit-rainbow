@@ -43,9 +43,9 @@ function ColorCountPanel(props){
     )
     let color_percent = Math.floor((color_count / total) * 100)
     return (
-      <div className="Info-panel">
-          <p>{props.color} has been mentioned {color_count} times</p>
-          <p>This represents {color_percent}% of all stored comments</p>
+      <div className="Info-panel box count-box">
+          <p className="block is-size-5">{props.color} has been mentioned <strong className="datapoint">{color_count}</strong> times</p>
+          <p className="block is-size-5">This represents <strong className="datapoint">{color_percent}%</strong> of all stored comments</p>
       </div>
     );
   }
