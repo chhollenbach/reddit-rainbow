@@ -26,7 +26,7 @@ To test development:
 App is currently designed to be used with Heroku as a hosting platform for the API, web client, python bot, and database. Please visit their [website](https://www.heroku.com/) to learn more about hosting there. If the app is hosted locally or elsewhere, be aware that certain key variables were stored on Heroku as configuration variables and will need to be altered to work on a different solution.
 
 # App Architecture Explanation
-All componenest are hosted on Heroku. This app is a full-stack CRUD app built using the MVC design pattern. A Python bot scrapes reddit comments for any mention of the colors of the rainbow. When found, the comment and metadata are sent to a RESTful Node.js API posts the data to a postgreSQL database. This API is also responsible for updating or deleting the data as comments are re-examined using a utility python script to check for either a changed comment score or a deleted comment. The data is visualized using React.
+All components are hosted on Heroku. This app is a full-stack CRUD app built using the MVC design pattern. A Python bot scrapes reddit comments for any mention of the colors of the rainbow. When found, the comment and metadata are sent to a RESTful Node.js API posts the data to a postgreSQL database. This API is also responsible for updating or deleting the data as comments are re-examined using a utility python script to check for either a changed comment score or a deleted comment. The data is visualized using React.
 
 # Change Log
 ## August 2021
